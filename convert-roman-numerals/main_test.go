@@ -6,7 +6,14 @@ var cases = []struct {
 	input  string
 	expect int
 }{
+	{"IV", 4},
 	{"CXVI", 116},
+	{"X", 10},
+	{"LXXXIV", 84},
+	{"MD", 1500},
+	{"DCCCXC", 890},
+	{"MDCCC", 1800},
+	{"DI", 501},
 }
 
 func TestRoman2Arabic(t *testing.T) {
