@@ -1,9 +1,20 @@
+// convert-roman-numerals
+// reference: https://discuss.leetcode.com/topic/51161/convert-roman-numerals-to-arabic/6
+
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 func main() {
-	fmt.Println(Roman2Arabic(""))
+	if len(os.Args) <= 1 {
+		fmt.Println("convert-roman-numerals <roman>")
+		return
+	}
+	arguments := os.Args[1]
+	fmt.Println(Roman2Arabic(arguments))
 }
 
 var rMap = map[string]int{
