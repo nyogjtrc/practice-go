@@ -33,5 +33,8 @@ func CreateAnswerNumber() string {
 
 // CheckGuessNumber return true when answer is the same of guess number
 func CheckGuessNumber(ans string, guess string) bool {
+	if ans == guess {
+		return true
+	}
 	return false
 }
