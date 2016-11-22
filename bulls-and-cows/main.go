@@ -14,7 +14,7 @@ func main() {
 
 	for {
 		fmt.Scanf("%s", &playerGuess)
-		fmt.Printf("The numbers you input is: %s\n", playerGuess)
+		fmt.Printf("You input %d number : %s\n", len(playerGuess), playerGuess)
 
 		if CheckGuessNumber(answer, playerGuess) {
 			fmt.Println("Congrate, you guess the right numbers.")
