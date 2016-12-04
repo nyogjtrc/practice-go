@@ -18,13 +18,15 @@ func main() {
 		fmt.Scanf("%s", &playerGuess)
 		fmt.Printf("You input %d number : %s\n", len(playerGuess), playerGuess)
 
-		if CheckGuessNumber(answer, playerGuess) {
-			fmt.Println("Congrate, you guess the right numbers.")
+		AA, BB := CheckGuessNumber(answer, playerGuess)
+		if AA == 4 {
 			break
 		}
 
-		fmt.Println("Sorry, wrong number, please input 4 numbers again.")
+		fmt.Printf("%dA%dB\n", AA, BB)
 	}
+
+	fmt.Println("4A0B, Congrate, you guess the right numbers.")
 
 }
 
@@ -53,10 +55,25 @@ func CreateAnswerNumber() string {
 	return ans1 + ans2 + ans3 + ans4
 }
 
-// CheckGuessNumber return true when answer is the same of guess number
-func CheckGuessNumber(ans string, guess string) bool {
-	if ans == guess {
-		return true
+// CheckGuessNumber return A, B result
+func CheckGuessNumber(ans string, guess string) (int, int) {
+	resultA := 0
+	resultB := 0
+
+	for i := 0; i < 4; i++ {
+		if ans[i] == guess[i] {
+			resultA++
+		}
+
+		for j := 0; j < 4; j++ {
+			if j == i {
+				continue
+			}
+			if ans[j] == guess[i] {
+				resultB++
+			}
+		}
 	}
-	return false
+
+	return resultA, resultB
 }
