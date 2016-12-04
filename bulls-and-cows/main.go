@@ -10,24 +10,26 @@ func main() {
 	fmt.Println("Let's play bulls and cows")
 
 	var playerGuess string
+	tryingCounter := 0
+
 	answer := CreateAnswerNumber()
 
-	fmt.Println("The answer is ready, please input 4 numbers.")
+	fmt.Println("The answer is ready, please input 4 numbers:")
 
 	for {
 		fmt.Scanf("%s", &playerGuess)
-		fmt.Printf("You input %d number : %s\n", len(playerGuess), playerGuess)
+		tryingCounter++
 
 		AA, BB := CheckGuessNumber(answer, playerGuess)
+
+		fmt.Printf("%dA%dB\n\n", AA, BB)
+
 		if AA == 4 {
 			break
 		}
-
-		fmt.Printf("%dA%dB\n", AA, BB)
 	}
 
-	fmt.Println("4A0B, Congrate, you guess the right numbers.")
-
+	fmt.Printf("Congrate, you try %d times and win.\n", tryingCounter)
 }
 
 // CreateAnswerNumber create a random number as answer
