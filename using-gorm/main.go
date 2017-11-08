@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -30,6 +31,8 @@ func main() {
 	}
 
 	db.Create(&user)
+
+	fmt.Printf("%+v", user)
 
 	db.DropTable(&User{})
 }
