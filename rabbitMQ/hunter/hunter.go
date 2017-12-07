@@ -4,6 +4,7 @@ import (
 	"github.com/streadway/amqp"
 )
 
+// RabbitHunter store data for connect rabbitMQ
 type RabbitHunter struct {
 	rabbitURL   string
 	rConnection *amqp.Connection
@@ -31,7 +32,7 @@ func (h *RabbitHunter) Close() {
 	}
 }
 
-// connect dial to rabbitMQ, connect to channel, and declare queue
+// Connect dial to rabbitMQ, connect to channel, and declare queue
 func (h *RabbitHunter) Connect() (err error) {
 	h.rConnection, err = amqp.Dial(h.rabbitURL)
 	if err != nil {
