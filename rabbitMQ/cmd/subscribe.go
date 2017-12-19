@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"Cypress/watcher/module/hunter"
 	"log"
+
+	"github.com/nyogjtrc/practice-go/rabbitMQ/hunter"
 
 	"github.com/spf13/cobra"
 )
