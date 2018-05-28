@@ -2,6 +2,7 @@ package store
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 	mgo "gopkg.in/mgo.v2"
@@ -27,9 +28,9 @@ func TestCreateUpdate(t *testing.T) {
 	session := NewSession()
 	defer session.Close()
 	c := session.DB(DatabaseName).C(CollectionName)
-	defer c.DropCollection()
 
 	op := New(session)
+	defer op.DropCollection()
 
 	// create
 	err := op.Create(one)
@@ -74,10 +75,9 @@ func TestAddUpdateDeleteBook(t *testing.T) {
 
 	session := NewSession()
 	defer session.Close()
-	c := session.DB(DatabaseName).C(CollectionName)
-	defer c.DropCollection()
 
 	op := New(session)
+	defer op.DropCollection()
 
 	err := op.Create(one)
 	assert.NoError(t, err)
@@ -118,4 +118,31 @@ func TestAddUpdateDeleteBook(t *testing.T) {
 	result, err = op.Find(one.Name)
 	assert.NoError(t, err)
 	assert.Equal(t, expect, result)
+}
+
+func TestTouchTime(t *testing.T) {
+
+	one := BookStore{
+		Name:  "The Book Store",
+		Owner: "me",
+		Books: []Book{},
+	}
+
+	session := NewSession()
+	defer session.Close()
+
+	op := New(session)
+	defer op.DropCollection()
+
+	// create
+	err := op.Create(one)
+	assert.NoError(t, err)
+
+	err = op.TouchTime(one.Name)
+	assert.NoError(t, err)
+
+	result, err := op.Find(one.Name)
+	assert.NoError(t, err)
+	assert.Equal(t, time.Now().Unix(), result.UpdateAt.Unix())
+
 }

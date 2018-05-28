@@ -1,6 +1,8 @@
 package store
 
 import (
+	"time"
+
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -14,9 +16,10 @@ type Book struct {
 
 // BookStore have many books
 type BookStore struct {
-	Name  string
-	Owner string
-	Books []Book
+	Name     string
+	Owner    string
+	Books    []Book
+	UpdateAt time.Time
 }
 
 // DatabaseName for stroe
@@ -47,6 +50,14 @@ func (o *Operator) Update(new BookStore) error {
 	return o.c.Update(
 		bson.M{"name": new.Name},
 		bson.M{"$set": bson.M{"owner": new.Owner}},
+	)
+}
+
+// TouchTime update BookStore UpdateAt time
+func (o *Operator) TouchTime(name string) error {
+	return o.c.Update(
+		bson.M{"name": name},
+		bson.M{"$set": bson.M{"updateat": time.Now()}},
 	)
 }
 
