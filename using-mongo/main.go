@@ -4,14 +4,9 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/nyogjtrc/practice-go/using-mongo/store"
 	mgo "gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 )
-
-type Person struct {
-	Name  string
-	Phone string
-}
 
 func main() {
 	session, err := mgo.Dial("localhost")
@@ -23,23 +18,34 @@ func main() {
 	// Optional. Switch the session to a monotonic behavior.
 	session.SetMode(mgo.Monotonic, true)
 
-	c := session.DB("test").C("people")
-	err = c.Insert(&Person{"Ale", "+55 53 8116 9639"},
-		&Person{"Cla", "+55 53 8402 8510"})
+	op := store.New(session)
+
+	err = op.Create(store.BookStore{
+		Name:  "Maple Store",
+		Owner: "Maple",
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	result := Person{}
-	err = c.Find(bson.M{"name": "Ale"}).One(&result)
+	result, err := op.Find("Maple Store")
+	fmt.Println(result, err)
+
+	err = op.AddBook("Maple Store", store.Book{
+		Title:  "Maple Story",
+		Author: "Maple",
+		ISBN:   "abc",
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Phone:", result.Phone)
+	result, err = op.Find("Maple Store")
+	fmt.Println(result, err)
 
-	err = c.DropCollection()
+	err = op.DropCollection()
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
