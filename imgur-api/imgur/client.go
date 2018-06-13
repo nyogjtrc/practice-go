@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -107,11 +108,27 @@ type ResponseError struct {
 	Status  int      `json:"status"`
 }
 
-func (ic *Client) parseError(body []byte) error {
+func parseError(body []byte) (err error) {
 	r := new(ResponseError)
-	err := json.Unmarshal(body, r)
+	err = json.Unmarshal(body, r)
 	if err != nil {
-		return err
+		return
 	}
 	return errors.New(r.Data.Error)
+}
+
+func parseResponse(resp *http.Response, r interface{}) (err error) {
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	fmt.Println("resp body:", string(body))
+
+	fmt.Println(resp.Status)
+	if resp.StatusCode != 200 {
+		return parseError(body)
+	}
+
+	err = json.Unmarshal(body, r)
+	return
 }

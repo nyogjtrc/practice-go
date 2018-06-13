@@ -19,10 +19,8 @@ func TestNew(t *testing.T) {
 }
 
 func TestParseError(t *testing.T) {
-	ic := New("123", "abc", "aaaaa", "bbbbb")
-
 	json := []byte(`{"data":{"error":"Unable to find an image","request":"","method":"GET"},"success":false,"status":404}`)
-	err := ic.parseError(json)
+	err := parseError(json)
 
 	assert.Equal(t, errors.New("Unable to find an image"), err)
 }
