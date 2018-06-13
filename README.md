@@ -9,6 +9,7 @@ That's practice golang.
 - graceful-stop: 用 API 控制服務 reload 跟 stop
 - grpc: grpc 練習
 - http-request: 實作發送 http GET, POST 的方法
+- imgur-api: imgur api client
 - rabbitMQ: 練習 rabbitMQ publish 跟 consumer 的基本用法
 - redis-pubsub: 練習 redis pubsub 用法
 - using-gorm

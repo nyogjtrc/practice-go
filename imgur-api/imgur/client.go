@@ -1,3 +1,7 @@
+// imgur api client
+//
+// api doc: https://apidocs.imgur.com
+
 package imgur
 
 import (
@@ -12,6 +16,9 @@ import (
 
 // XMashpeKeyHeader for imgur commercial uaage
 const XMashpeKeyHeader = "X-Mashape-Key"
+
+// APIBaseV3 imgur API version 3 endpoint
+const APIBaseV3 = "https://api.imgur.com/3/"
 
 // Endpoint is imgur's OAuth 2.0 endpoint
 var Endpoint = oauth2.Endpoint{
