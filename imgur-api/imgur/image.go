@@ -2,10 +2,8 @@ package imgur
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -44,20 +42,11 @@ func (ic *Client) GetImage(id string) (*ResponseImage, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	err = parseResponse(resp, r)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(body))
 
-	if resp.StatusCode != 200 {
-		return nil, parseError(body)
-	}
-
-	err = json.Unmarshal(body, r)
-	if err != nil {
-		return nil, err
-	}
 	return r, nil
 }
 
