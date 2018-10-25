@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  version:
+    container_name: version_server
+    image: ver
+    restart: always
+    ports:
+      - 8888:8888
+  prom:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ${PWD}/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
