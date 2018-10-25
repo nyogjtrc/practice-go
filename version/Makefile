@@ -24,3 +24,13 @@ protoc:
 
 clean:
 	rm -f ./ver ./ver-cli
+
+docker-build:
+	docker build -t ver \
+		--build-arg commit=$(commit) \
+		--build-arg buildtime=$(buildtime) \
+		--build-arg version=$(version) \
+		.
+
+docker-run:
+	docker run --rm -p 8888:8888 ver
