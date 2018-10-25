@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package proto;
+
+message Empty{}
+
+message VersionMessage {
+  string version = 1;
+  string git_commit = 2;
+  string build_time = 3;
+}
+
+service VersionService {
+  rpc Version (Empty) returns (VersionMessage) {}
+}
