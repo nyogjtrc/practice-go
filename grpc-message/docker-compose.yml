@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ${PWD}/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    ports:
+      - 8888:80
+      - 50051:50051
+  message1:
+    image: message-server
+    ports:
+     - 50051
+  message2:
+    image: message-server
+    ports:
+      - 50051
+  message3:
+    image: message-server
+    ports:
+      - 50051
