@@ -8,35 +8,61 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-type User struct {
-	ID       uint
-	Name     string
-	Age      int
-	CreateAt time.Time
+// Product _
+type Product struct {
+	ID        uint   `gorm:"primary_key"`
+	Code      string `gorm:"not null;unique_index"`
+	Price     uint
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func main() {
-
-	db, err := GetConnection()
+	// Connect database
+	db, err := gorm.Open("mysql", "root:root@tcp/practice?charset=utf8&parseTime=True")
 	if err != nil {
-		panic(err)
+		panic("failed to connect database")
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&User{})
+	// Migrate the schema
+	db.AutoMigrate(&Product{})
 
-	user := User{
-		Name: "hi",
-		Age:  9,
+	// Create
+	err = db.Create(&Product{Code: "L1212", Price: 1000}).Error
+	if err != nil {
+		panic(err)
 	}
 
-	db.Create(&user)
+	err = db.Create(&Product{Code: "L1234", Price: 1234}).Error
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Printf("%+v", user)
+	// Read
+	var products []Product
+	var product Product
 
-	db.DropTable(&User{})
-}
+	// find product with id 1
+	if err := db.Find(&products).Error; err != nil {
+		fmt.Println("error", err)
+	}
+	fmt.Println(products)
 
-func GetConnection() (*gorm.DB, error) {
-	return gorm.Open("mysql", "root:cypress@tcp(127.0.0.1:3306)/test?charset=utf8&parseTime=True&loc=Local")
+	// find product with code l1212
+	if err := db.First(&product, "code = ?", "L1212").Error; err != nil {
+		panic(err)
+	}
+	fmt.Println("product", product)
+
+	// Update - update product's price to 2000
+	db.Model(&product).Update("Price", 2000)
+	fmt.Println("product", product)
+
+	// Delete - delete product
+	err = db.Debug().Delete(Product{}).Error
+	if err != nil {
+		panic(err)
+	}
+
 }
