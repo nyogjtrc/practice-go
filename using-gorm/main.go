@@ -26,7 +26,8 @@ func main() {
 	defer db.Close()
 
 	// Migrate the schema
-	db.AutoMigrate(&Product{})
+	db.Debug().AutoMigrate(&Product{})
+	defer db.DropTable(Product{})
 
 	// Create
 	err = db.Create(&Product{Code: "L1212", Price: 1000}).Error
@@ -50,10 +51,10 @@ func main() {
 	fmt.Println(products)
 
 	// find product with code l1212
-	if err := db.First(&product, "code = ?", "L1212").Error; err != nil {
+	if err := db.Where("code = ?", "L1212").First(&product).Error; err != nil {
 		panic(err)
 	}
-	fmt.Println("product", product)
+	fmt.Println("product L1212", product)
 
 	// Update - update product's price to 2000
 	db.Model(&product).Update("Price", 2000)
